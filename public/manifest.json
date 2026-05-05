@@ -1,0 +1,32 @@
+{
+  "name": "Alex Conforte Fit",
+  "short_name": "Alex Fit",
+  "description": "Reservas online para entrenamiento funcional, crosstraining y personalizado con Alex Conforte.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#dc2626",
+  "categories": ["fitness", "health", "sports"],
+  "icons": [
+    {
+      "src": "/logo-alex.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-alex.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-alex.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
