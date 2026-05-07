@@ -4,22 +4,26 @@ const localPhotos = [
   {
     src: "/local/local-1.jpg",
     title: "Espacio de entrenamiento",
-    description: "Un ambiente preparado para entrenar con comodidad, energía y seguimiento.",
+    description:
+      "Un ambiente preparado para entrenar con comodidad, energía y seguimiento.",
   },
   {
     src: "/local/local-2.jpg",
     title: "Clases dinámicas",
-    description: "Entrenamientos funcionales y crosstraining adaptados a distintos niveles.",
+    description:
+      "Entrenamientos funcionales y crosstraining adaptados a distintos niveles.",
   },
   {
     src: "/local/local-3.jpg",
     title: "Equipamiento",
-    description: "Materiales y elementos para trabajar fuerza, resistencia y movilidad.",
+    description:
+      "Materiales y elementos para trabajar fuerza, resistencia y movilidad.",
   },
   {
     src: "/local/local-4.jpg",
     title: "Seguimiento personalizado",
-    description: "Acompañamiento cercano para mejorar técnica, constancia y progreso.",
+    description:
+      "Acompañamiento cercano para mejorar técnica, constancia y progreso.",
   },
 ];
 
@@ -35,9 +39,11 @@ export default function LocalGallery() {
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
               El espacio
             </p>
+
             <h2 className="mt-2 max-w-3xl text-4xl font-black tracking-tight md:text-5xl">
               Conocé el lugar donde vas a entrenar
             </h2>
+
             <p className="mt-4 max-w-2xl leading-8 text-zinc-400">
               Un local pensado para entrenamientos funcionales, crosstraining y
               clases personalizadas, con ambiente cercano y acompañamiento real.
@@ -59,15 +65,21 @@ export default function LocalGallery() {
               alt={localPhotos[0].title}
               fill
               className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
             />
+
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+
             <div className="absolute bottom-0 p-6">
               <p className="inline-flex rounded-full border border-red-500/30 bg-red-500/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-red-200">
                 Alex Conforte PT
               </p>
+
               <h3 className="mt-4 text-3xl font-black text-white">
                 {localPhotos[0].title}
               </h3>
+
               <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">
                 {localPhotos[0].description}
               </p>
@@ -86,7 +98,9 @@ export default function LocalGallery() {
                     alt={photo.title}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 35vw"
                   />
+
                   <div className="absolute inset-0 bg-black/10" />
                 </div>
 
@@ -94,6 +108,7 @@ export default function LocalGallery() {
                   <h3 className="text-2xl font-black text-white">
                     {photo.title}
                   </h3>
+
                   <p className="mt-2 text-sm leading-6 text-zinc-400">
                     {photo.description}
                   </p>
@@ -101,13 +116,6 @@ export default function LocalGallery() {
               </article>
             ))}
           </div>
-        </div>
-
-        <div className="mt-6 rounded-[2rem] border border-red-500/20 bg-red-500/10 p-5">
-          <p className="font-bold text-red-100">
-            Tip: usá fotos reales del local, con buena luz y encuadres limpios.
-            Eso aumenta mucho la confianza de quien entra por primera vez.
-          </p>
         </div>
       </div>
     </section>
