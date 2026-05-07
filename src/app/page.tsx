@@ -1,5 +1,7 @@
 import Image from "next/image";
 import BookingForm from "@/components/booking/BookingForm";
+import PaymentReminderAlert from "@/components/PaymentReminderAlert";
+import LocalGallery from "@/components/LocalGallery";
 
 const services = [
   {
@@ -202,6 +204,9 @@ export default function Home() {
             <a href="#servicios" className="transition hover:text-white">
               Servicios
             </a>
+            <a href="#local" className="transition hover:text-white">
+              Local
+            </a>
             <a href="#horarios" className="transition hover:text-white">
               Horarios
             </a>
@@ -252,10 +257,10 @@ export default function Home() {
               </a>
 
               <a
-                href="#horarios"
+                href="#local"
                 className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-center font-bold text-white transition hover:border-red-500/50"
               >
-                Ver horarios
+                Ver el local
               </a>
             </div>
 
@@ -346,6 +351,8 @@ export default function Home() {
         </div>
       </section>
 
+      <PaymentReminderAlert />
+
       <section id="servicios" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="mb-8 max-w-2xl">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
@@ -380,6 +387,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <LocalGallery />
 
       <section id="horarios" className="border-y border-white/10 bg-zinc-950/50">
         <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
