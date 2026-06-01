@@ -1,7 +1,7 @@
 import Image from "next/image";
 import BookingForm from "@/components/booking/BookingForm";
 import PaymentReminderAlert from "@/components/PaymentReminderAlert";
-import LocalGallery from "@/components/LocalGallery";
+import SuggestionFloatingButton from "@/components/SuggestionFloatingButton";
 
 const services = [
   {
@@ -13,6 +13,11 @@ const services = [
     title: "Crosstraining",
     tag: "Intensidad · Técnica · Superación",
     text: "Entrenamientos variados que combinan fuerza, cardio, técnica y rendimiento.",
+  },
+  {
+    title: "GAP",
+    tag: "Glúteos · Abdomen · Piernas",
+    text: "Entrenamiento específico para glúteos, abdomen y piernas. Una clase ideal para fortalecer, tonificar y mejorar la resistencia muscular, trabajando zonas clave del cuerpo con ejercicios dinámicos y progresivos.",
   },
   {
     title: "Personalizado",
@@ -41,10 +46,13 @@ const weeklySchedule = [
     day: "Lunes",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
+      { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
-      { time: "11:00", activity: "Crosstraining" },
-      { time: "15:00", activity: "Crosstraining" },
-      { time: "16:00", activity: "Funcional" },
+      { time: "09:00", activity: "GAP" },
+      { time: "10:00", activity: "Crosstraining" },
+      { time: "14:00", activity: "GAP" },
+      { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -56,8 +64,8 @@ const weeklySchedule = [
       { time: "06:00", activity: "Funcional" },
       { time: "07:00", activity: "Funcional" },
       { time: "08:30", activity: "Crosstraining" },
-      { time: "11:00", activity: "Crosstraining" },
-      { time: "15:00", activity: "Crosstraining" },
+      { time: "10:00", activity: "Crosstraining" },
+      { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
@@ -68,10 +76,13 @@ const weeklySchedule = [
     day: "Miércoles",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
+      { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
-      { time: "11:00", activity: "Crosstraining" },
-      { time: "15:00", activity: "Crosstraining" },
-      { time: "16:00", activity: "Funcional" },
+      { time: "09:00", activity: "GAP" },
+      { time: "10:00", activity: "Crosstraining" },
+      { time: "14:00", activity: "GAP" },
+      { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -83,8 +94,8 @@ const weeklySchedule = [
       { time: "06:00", activity: "Funcional" },
       { time: "07:00", activity: "Funcional" },
       { time: "08:30", activity: "Crosstraining" },
-      { time: "11:00", activity: "Crosstraining" },
-      { time: "15:00", activity: "Crosstraining" },
+      { time: "10:00", activity: "Crosstraining" },
+      { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
@@ -95,10 +106,13 @@ const weeklySchedule = [
     day: "Viernes",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
+      { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
-      { time: "11:00", activity: "Crosstraining" },
-      { time: "15:00", activity: "Crosstraining" },
-      { time: "16:00", activity: "Funcional" },
+      { time: "09:00", activity: "GAP" },
+      { time: "10:00", activity: "Crosstraining" },
+      { time: "14:00", activity: "GAP" },
+      { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -119,14 +133,22 @@ function getClassForDayAndTime(dayName: string, time: string) {
 }
 
 function ActivityPill({ activity }: { activity: string }) {
-  const isCross = activity.toLowerCase().includes("cross");
+  const lowerActivity = activity.toLowerCase();
+
+  const isCross = lowerActivity.includes("cross");
+  const isGap = lowerActivity.includes("gap");
+  const isCombo = isCross && isGap;
 
   return (
     <span
       className={`inline-flex rounded-full px-3 py-1 text-xs font-bold shadow-sm ${
-        isCross
-          ? "border border-red-400/40 bg-red-500/15 text-red-100"
-          : "border border-zinc-500/40 bg-zinc-700/40 text-zinc-100"
+        isCombo
+          ? "border border-red-300/50 bg-red-500/20 text-red-50"
+          : isGap
+            ? "border border-pink-300/40 bg-pink-500/15 text-pink-100"
+            : isCross
+              ? "border border-red-400/40 bg-red-500/15 text-red-100"
+              : "border border-zinc-500/40 bg-zinc-700/40 text-zinc-100"
       }`}
     >
       {activity}
@@ -204,9 +226,6 @@ export default function Home() {
             <a href="#servicios" className="transition hover:text-white">
               Servicios
             </a>
-            <a href="#local" className="transition hover:text-white">
-              Local
-            </a>
             <a href="#horarios" className="transition hover:text-white">
               Horarios
             </a>
@@ -228,6 +247,8 @@ export default function Home() {
         </div>
       </header>
 
+      <PaymentReminderAlert />
+
       <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(220,38,38,0.32),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(127,29,29,0.22),transparent_32%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
@@ -244,8 +265,8 @@ export default function Home() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-              Funcional, crosstraining y entrenamiento personalizado con clases
-              dinámicas, acompañamiento profesional y reserva online.
+              Funcional, crosstraining, GAP y entrenamiento personalizado con
+              clases dinámicas, acompañamiento profesional y reserva online.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -257,10 +278,10 @@ export default function Home() {
               </a>
 
               <a
-                href="#local"
+                href="#horarios"
                 className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-center font-bold text-white transition hover:border-red-500/50"
               >
-                Ver el local
+                Ver horarios
               </a>
             </div>
 
@@ -271,7 +292,7 @@ export default function Home() {
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                <p className="text-2xl font-black text-white">3</p>
+                <p className="text-2xl font-black text-white">4</p>
                 <p className="mt-1 text-sm text-zinc-400">
                   modalidades de entrenamiento
                 </p>
@@ -351,8 +372,6 @@ export default function Home() {
         </div>
       </section>
 
-      <PaymentReminderAlert />
-
       <section id="servicios" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="mb-8 max-w-2xl">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
@@ -367,7 +386,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
             <article
               key={service.title}
@@ -387,8 +406,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      <LocalGallery />
 
       <section id="horarios" className="border-y border-white/10 bg-zinc-950/50">
         <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
@@ -453,7 +470,7 @@ export default function Home() {
                         >
                           {classItem ? (
                             <div className="rounded-2xl border border-white/15 bg-zinc-800/70 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                              <div className="flex items-center justify-center">
+                              <div className="flex items-center justify-center text-center">
                                 <ActivityPill activity={classItem.activity} />
                               </div>
                             </div>
@@ -473,10 +490,16 @@ export default function Home() {
 
           <div className="mt-5 flex flex-wrap gap-3 text-sm text-zinc-400">
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
-              Funcional y Crosstraining
+              Funcional
             </span>
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
-              Entrenamiento personalizado con coordinación
+              Crosstraining
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+              GAP
+            </span>
+            <span className="rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-red-100">
+              Horarios combinados: GAP y Crosstraining
             </span>
           </div>
         </div>
@@ -494,7 +517,7 @@ export default function Home() {
 
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="rounded-[2rem] border border-white/10 bg-zinc-950 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
-            <h3 className="text-2xl font-black">Funcional / Crosstraining</h3>
+            <h3 className="text-2xl font-black">Funcional / Crosstraining / GAP</h3>
             <p className="mt-2 text-sm text-zinc-400">
               Planes por frecuencia semanal.
             </p>
@@ -564,7 +587,10 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="border-y border-white/10 bg-zinc-950/40">
+      <section
+        id="reservar"
+        className="border-y border-white/10 bg-zinc-950/40"
+      >
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:px-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
@@ -691,6 +717,8 @@ export default function Home() {
           </a>
         </div>
       </footer>
+
+      <SuggestionFloatingButton />
     </main>
   );
 }
