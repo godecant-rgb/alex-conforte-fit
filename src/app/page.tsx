@@ -47,6 +47,7 @@ const weeklySchedule = [
     day: "Lunes",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
@@ -77,6 +78,7 @@ const weeklySchedule = [
     day: "Miércoles",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
@@ -107,6 +109,7 @@ const weeklySchedule = [
     day: "Viernes",
     classes: [
       { time: "06:00", activity: "Funcional" },
+      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
