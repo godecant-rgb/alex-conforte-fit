@@ -2,6 +2,7 @@ import Image from "next/image";
 import BookingForm from "@/components/booking/BookingForm";
 import PaymentReminderAlert from "@/components/PaymentReminderAlert";
 import SuggestionFloatingButton from "@/components/SuggestionFloatingButton";
+import LocalGallery from "@/components/LocalGallery";
 
 const services = [
   {
@@ -46,13 +47,13 @@ const weeklySchedule = [
     day: "Lunes",
     classes: [
       { time: "06:00", activity: "Funcional" },
-      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
       { time: "10:00", activity: "Crosstraining" },
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
+      { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -76,13 +77,13 @@ const weeklySchedule = [
     day: "Miércoles",
     classes: [
       { time: "06:00", activity: "Funcional" },
-      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
       { time: "10:00", activity: "Crosstraining" },
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
+      { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -106,13 +107,13 @@ const weeklySchedule = [
     day: "Viernes",
     classes: [
       { time: "06:00", activity: "Funcional" },
-      { time: "07:00", activity: "Funcional" },
       { time: "08:00", activity: "GAP" },
       { time: "08:30", activity: "Crosstraining" },
       { time: "09:00", activity: "GAP" },
       { time: "10:00", activity: "Crosstraining" },
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
+      { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -377,9 +378,11 @@ export default function Home() {
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
             Entrenamientos
           </p>
+
           <h2 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
             Modalidades para distintos objetivos
           </h2>
+
           <p className="mt-4 text-zinc-400">
             Elegí el tipo de entrenamiento que mejor se adapta a tu nivel,
             disponibilidad y objetivo.
@@ -393,12 +396,15 @@ export default function Home() {
               className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)] transition hover:-translate-y-1 hover:border-red-500/40"
             >
               <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-red-500/10 blur-2xl transition group-hover:bg-red-500/20" />
+
               <p className="relative text-sm font-bold text-red-400">
                 {service.tag}
               </p>
+
               <h3 className="relative mt-4 text-3xl font-black">
                 {service.title}
               </h3>
+
               <p className="relative mt-4 leading-7 text-zinc-400">
                 {service.text}
               </p>
@@ -414,9 +420,11 @@ export default function Home() {
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
                 Horarios
               </p>
+
               <h2 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
                 Horarios semanales
               </h2>
+
               <p className="mt-4 max-w-2xl text-zinc-400">
                 Visualizá la semana completa con una grilla clara, separada y
                 con mejor contraste.
@@ -492,12 +500,15 @@ export default function Home() {
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
               Funcional
             </span>
+
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
               Crosstraining
             </span>
+
             <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
               GAP
             </span>
+
             <span className="rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-red-100">
               Horarios combinados: GAP y Crosstraining
             </span>
@@ -505,11 +516,14 @@ export default function Home() {
         </div>
       </section>
 
+      <LocalGallery />
+
       <section id="precios" className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="mb-8">
           <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
             Planes
           </p>
+
           <h2 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
             Precios mensuales
           </h2>
@@ -517,7 +531,10 @@ export default function Home() {
 
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="rounded-[2rem] border border-white/10 bg-zinc-950 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
-            <h3 className="text-2xl font-black">Funcional / Crosstraining / GAP</h3>
+            <h3 className="text-2xl font-black">
+              Funcional / Crosstraining / GAP
+            </h3>
+
             <p className="mt-2 text-sm text-zinc-400">
               Planes por frecuencia semanal.
             </p>
@@ -549,6 +566,7 @@ export default function Home() {
             <h3 className="text-2xl font-black">
               Entrenamiento personalizado
             </h3>
+
             <p className="mt-2 text-sm text-zinc-400">
               Seguimiento individual según objetivo y disponibilidad.
             </p>
@@ -571,9 +589,11 @@ export default function Home() {
               <p className="rounded-2xl border border-white/10 bg-black/40 p-4">
                 Trimestral: 10% de descuento.
               </p>
+
               <p className="rounded-2xl border border-white/10 bg-black/40 p-4">
                 Semestral: 15% de descuento.
               </p>
+
               <p className="rounded-2xl border border-white/10 bg-black/40 p-4">
                 Anual: entrená 12 meses y pagá 10.
               </p>
@@ -596,9 +616,11 @@ export default function Home() {
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
               Agenda online
             </p>
+
             <h2 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
               Reservá tu clase en segundos
             </h2>
+
             <p className="mt-4 leading-8 text-zinc-400">
               Completá nombre, teléfono, actividad, fecha y horario. No
               necesitás crear usuario ni contraseña.
@@ -676,6 +698,7 @@ export default function Home() {
                 <p className="text-sm font-bold uppercase tracking-[0.2em] text-red-300">
                   Reserva online
                 </p>
+
                 <p className="mt-2 text-lg font-black text-white">
                   Tu reserva queda registrada automáticamente.
                 </p>

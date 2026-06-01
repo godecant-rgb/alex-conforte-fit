@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import ManualBookingForm from "@/components/admin/ManualBookingForm";
+import AdminSuggestionsPanel from "@/components/admin/AdminSuggestionsPanel";
 
 type Booking = {
   id: string;
@@ -46,6 +47,8 @@ type StatsData = {
     total: number;
   }[];
 };
+
+type ActiveView = "agenda" | "stats" | "suggestions";
 
 function formatTime(time: string) {
   return time.slice(0, 5);
@@ -120,10 +123,13 @@ function PremiumStatCard({
   return (
     <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01))] p-5 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
       <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-red-500/10 blur-2xl" />
+
       <p className="relative text-sm text-zinc-400">{label}</p>
+
       <p className="relative mt-3 text-3xl font-black tracking-tight text-white md:text-4xl">
         {value}
       </p>
+
       {helper ? (
         <p className="relative mt-2 text-sm text-zinc-500">{helper}</p>
       ) : null}
@@ -165,6 +171,7 @@ function BreakdownCard({
                   <span className="text-sm font-medium text-zinc-200">
                     {label}
                   </span>
+
                   <span className="text-sm font-bold text-red-400">
                     {value}
                   </span>
@@ -198,7 +205,7 @@ export default function AdminPanel() {
   const [loadingStats, setLoadingStats] = useState(false);
   const [deletingId, setDeletingId] = useState("");
 
-  const [activeView, setActiveView] = useState<"agenda" | "stats">("agenda");
+  const [activeView, setActiveView] = useState<ActiveView>("agenda");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -438,7 +445,7 @@ export default function AdminPanel() {
             </h1>
 
             <p className="mt-3 text-sm leading-6 text-zinc-400">
-              Ingresá la contraseña para ver agenda y estadísticas.
+              Ingresá la contraseña para ver agenda, estadísticas y sugerencias.
             </p>
           </div>
 
@@ -447,6 +454,7 @@ export default function AdminPanel() {
               <label className="text-sm font-semibold text-zinc-200">
                 Contraseña
               </label>
+
               <input
                 type="password"
                 value={password}
@@ -486,12 +494,14 @@ export default function AdminPanel() {
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
                 Panel privado
               </p>
+
               <h1 className="mt-2 text-4xl font-black tracking-tight md:text-5xl">
-                Gestión de reservas
+                Gestión del gimnasio
               </h1>
+
               <p className="mt-3 max-w-2xl text-zinc-400">
-                Visualizá la agenda, controlá alumnos por horario y revisá el
-                rendimiento general del mes en un panel premium y ordenado.
+                Visualizá la agenda, controlá alumnos por horario, revisá
+                estadísticas y gestioná sugerencias recibidas desde la web.
               </p>
             </div>
 
@@ -530,91 +540,109 @@ export default function AdminPanel() {
               >
                 Estadísticas
               </button>
+
+              <button
+                onClick={() => setActiveView("suggestions")}
+                className={`rounded-2xl px-5 py-3 font-bold transition ${
+                  activeView === "suggestions"
+                    ? "bg-red-600 text-white"
+                    : "border border-white/10 bg-white/5 text-zinc-200"
+                }`}
+              >
+                Sugerencias
+              </button>
             </div>
           </div>
         </header>
 
-        <section className="mb-6 grid gap-4 lg:grid-cols-[1fr_auto_auto_auto]">
-          <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-5 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
-            <label className="text-sm font-semibold text-zinc-300">
-              Elegir fecha de referencia
-            </label>
+        {activeView !== "suggestions" ? (
+          <>
+            <section className="mb-6 grid gap-4 lg:grid-cols-[1fr_auto_auto_auto]">
+              <div className="rounded-3xl border border-white/10 bg-zinc-950/80 p-5 shadow-[0_10px_40px_rgba(0,0,0,0.35)]">
+                <label className="text-sm font-semibold text-zinc-300">
+                  Elegir fecha de referencia
+                </label>
 
-            <select
-              value={selectedDate}
-              onChange={(event) => setSelectedDate(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-lime-400 outline-none transition focus:border-red-500"
-            >
-              {dateOptions.map((date) => (
-                <option key={date} value={date}>
-                  {formatShortDate(date)}
-                </option>
-              ))}
-            </select>
+                <select
+                  value={selectedDate}
+                  onChange={(event) => setSelectedDate(event.target.value)}
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-lime-400 outline-none transition focus:border-red-500"
+                >
+                  {dateOptions.map((date) => (
+                    <option key={date} value={date}>
+                      {formatShortDate(date)}
+                    </option>
+                  ))}
+                </select>
 
-            <p className="mt-2 text-xs text-zinc-500">
-              Formato día / mes / año. Referencia para agenda diaria y
-              estadísticas.
-            </p>
-          </div>
+                <p className="mt-2 text-xs text-zinc-500">
+                  Formato día / mes / año. Referencia para agenda diaria y
+                  estadísticas.
+                </p>
+              </div>
 
-          <button
-            onClick={() => setSelectedDate(getToday())}
-            className="rounded-3xl border border-white/10 bg-zinc-950/80 px-6 py-5 font-bold transition hover:border-red-500"
-          >
-            Hoy
-          </button>
+              <button
+                onClick={() => setSelectedDate(getToday())}
+                className="rounded-3xl border border-white/10 bg-zinc-950/80 px-6 py-5 font-bold transition hover:border-red-500"
+              >
+                Hoy
+              </button>
 
-          <button
-            onClick={() => setSelectedDate(getTomorrow())}
-            className="rounded-3xl border border-white/10 bg-zinc-950/80 px-6 py-5 font-bold transition hover:border-red-500"
-          >
-            Mañana
-          </button>
+              <button
+                onClick={() => setSelectedDate(getTomorrow())}
+                className="rounded-3xl border border-white/10 bg-zinc-950/80 px-6 py-5 font-bold transition hover:border-red-500"
+              >
+                Mañana
+              </button>
 
-          <button
-            onClick={() => {
-              loadBookings(selectedDate || getToday());
-              loadStats(selectedDate || getToday());
-            }}
-            className="rounded-3xl bg-gradient-to-r from-red-600 to-red-500 px-6 py-5 font-bold transition hover:opacity-95"
-          >
-            Actualizar
-          </button>
-        </section>
+              <button
+                onClick={() => {
+                  loadBookings(selectedDate || getToday());
+                  loadStats(selectedDate || getToday());
+                }}
+                className="rounded-3xl bg-gradient-to-r from-red-600 to-red-500 px-6 py-5 font-bold transition hover:opacity-95"
+              >
+                Actualizar
+              </button>
+            </section>
 
-        <section className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <PremiumStatCard
-            label="Fecha seleccionada"
-            value={formatHumanDate(selectedDate)}
-          />
-          <PremiumStatCard
-            label="Reservas del día"
-            value={stats?.totals.day ?? totalBookings}
-            helper="Según la fecha seleccionada"
-          />
-          <PremiumStatCard
-            label="Reservas de la semana"
-            value={stats?.totals.week ?? 0}
-            helper="Semana de la fecha seleccionada"
-          />
-          <PremiumStatCard
-            label="Reservas del mes"
-            value={stats?.totals.month ?? 0}
-            helper="Mes de la fecha seleccionada"
-          />
-        </section>
+            <section className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              <PremiumStatCard
+                label="Fecha seleccionada"
+                value={formatHumanDate(selectedDate)}
+              />
 
-        {successMessage ? (
-          <div className="mb-6 rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
-            {successMessage}
-          </div>
-        ) : null}
+              <PremiumStatCard
+                label="Reservas del día"
+                value={stats?.totals.day ?? totalBookings}
+                helper="Según la fecha seleccionada"
+              />
 
-        {errorMessage ? (
-          <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-            {errorMessage}
-          </div>
+              <PremiumStatCard
+                label="Reservas de la semana"
+                value={stats?.totals.week ?? 0}
+                helper="Semana de la fecha seleccionada"
+              />
+
+              <PremiumStatCard
+                label="Reservas del mes"
+                value={stats?.totals.month ?? 0}
+                helper="Mes de la fecha seleccionada"
+              />
+            </section>
+
+            {successMessage ? (
+              <div className="mb-6 rounded-2xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
+                {successMessage}
+              </div>
+            ) : null}
+
+            {errorMessage ? (
+              <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                {errorMessage}
+              </div>
+            ) : null}
+          </>
         ) : null}
 
         {activeView === "agenda" ? (
@@ -634,10 +662,12 @@ export default function AdminPanel() {
                 label="Total de alumnos del día"
                 value={totalBookings}
               />
+
               <PremiumStatCard
                 label="Actividad más fuerte del día"
                 value={activitySummary[0]?.activity ?? "Sin datos"}
               />
+
               <PremiumStatCard
                 label="Horarios con reservas"
                 value={groupedBookings.length}
@@ -664,6 +694,7 @@ export default function AdminPanel() {
                         <p className="text-4xl font-black tracking-tight text-white">
                           {formatTime(group.start_time)}
                         </p>
+
                         <p className="mt-1 font-medium text-red-400">
                           {group.activity}
                         </p>
@@ -729,17 +760,21 @@ export default function AdminPanel() {
               )}
             </section>
           </>
-        ) : (
+        ) : null}
+
+        {activeView === "stats" ? (
           <>
             <section className="mb-6 grid gap-4 md:grid-cols-3">
               <PremiumStatCard
                 label="Actividad más reservada"
                 value={stats?.top_activity ?? "Sin datos"}
               />
+
               <PremiumStatCard
                 label="Horario más concurrido"
                 value={stats?.top_hour ?? "Sin datos"}
               />
+
               <PremiumStatCard
                 label="Día más fuerte"
                 value={stats?.top_weekday ?? "Sin datos"}
@@ -775,7 +810,9 @@ export default function AdminPanel() {
               </section>
             )}
           </>
-        )}
+        ) : null}
+
+        {activeView === "suggestions" ? <AdminSuggestionsPanel /> : null}
       </div>
     </main>
   );
