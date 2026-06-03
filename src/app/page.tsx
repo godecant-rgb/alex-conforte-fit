@@ -236,7 +236,7 @@ export default function Home() {
             <a href="#precios" className="transition hover:text-white">
               Precios
             </a>
-            <a href="#reservar" className="transition hover:text-white">
+            <a href="#agenda-clase" className="transition hover:text-white">
               Reservar
             </a>
           </nav>
@@ -275,7 +275,7 @@ export default function Home() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#reservar"
+                href="#agenda-clase"
                 className="rounded-2xl bg-gradient-to-r from-red-600 to-red-500 px-6 py-4 text-center font-black text-white shadow-lg shadow-red-950/30 transition hover:opacity-95"
               >
                 Reservar clase
@@ -365,7 +365,7 @@ export default function Home() {
                 </div>
 
                 <a
-                  href="#reservar"
+                  href="#agenda-clase"
                   className="mt-4 block rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center font-black transition hover:border-red-500/50"
                 >
                   Ir al formulario de reserva
@@ -709,7 +709,9 @@ export default function Home() {
             </div>
           </div>
 
-          <BookingForm />
+          <div id="agenda-clase" className="scroll-mt-28">
+            <BookingForm />
+          </div>
         </div>
       </section>
 
