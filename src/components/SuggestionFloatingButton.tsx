@@ -10,14 +10,14 @@ const categories = [
   "Otra sugerencia",
 ];
 
+type SubmitStatus = "idle" | "sending" | "success" | "error";
+
 export default function SuggestionFloatingButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Horarios");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<SubmitStatus>("idle");
   const [error, setError] = useState("");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -39,7 +39,17 @@ export default function SuggestionFloatingButton() {
         }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+
+      let data: { ok?: boolean; error?: string } = {};
+
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        throw new Error(
+          "La API de sugerencias no respondió correctamente. Revisá la ruta src/app/api/suggestions/route.ts."
+        );
+      }
 
       if (!response.ok) {
         throw new Error(data?.error ?? "No se pudo enviar la sugerencia.");
@@ -57,6 +67,12 @@ export default function SuggestionFloatingButton() {
           : "Ocurrió un error al enviar la sugerencia."
       );
     }
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+    setStatus("idle");
+    setError("");
   }
 
   return (
@@ -91,7 +107,7 @@ export default function SuggestionFloatingButton() {
 
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeModal}
                   className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm font-black text-zinc-300 transition hover:bg-white/10 hover:text-white"
                 >
                   ✕
@@ -102,6 +118,7 @@ export default function SuggestionFloatingButton() {
             <form onSubmit={handleSubmit} className="grid gap-4 p-6">
               <label className="grid gap-2">
                 <span className="text-sm font-bold text-zinc-300">Nombre</span>
+
                 <input
                   value={name}
                   onChange={(event) => setName(event.target.value)}
@@ -115,6 +132,7 @@ export default function SuggestionFloatingButton() {
                 <span className="text-sm font-bold text-zinc-300">
                   Categoría
                 </span>
+
                 <select
                   value={category}
                   onChange={(event) => setCategory(event.target.value)}
@@ -132,6 +150,7 @@ export default function SuggestionFloatingButton() {
                 <span className="text-sm font-bold text-zinc-300">
                   Mensaje
                 </span>
+
                 <textarea
                   value={message}
                   onChange={(event) => setMessage(event.target.value)}
@@ -159,7 +178,7 @@ export default function SuggestionFloatingButton() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeModal}
                   className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 font-black text-zinc-300 transition hover:border-white/20 hover:text-white"
                 >
                   Cerrar

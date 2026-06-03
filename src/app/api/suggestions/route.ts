@@ -1,99 +1,70 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
-const allowedStatuses = ["pending", "reviewed", "resolved", "archived"];
+const allowedCategories = [
+  "Horarios",
+  "Actividades",
+  "Instalaciones",
+  "Pagos",
+  "Otra sugerencia",
+];
 
-async function isAdminLoggedIn() {
-  const cookieStore = await cookies();
-  return cookieStore.get("alex_admin")?.value === "true";
-}
-
-export async function GET() {
+export async function POST(request: Request) {
   try {
-    const isAdmin = await isAdminLoggedIn();
-
-    if (!isAdmin) {
-      return NextResponse.json({ error: "No autorizado." }, { status: 401 });
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from("suggestions")
-      .select("id, name, category, message, status, created_at, updated_at")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error loading suggestions:", error);
-
-      return NextResponse.json(
-        { error: "No se pudieron cargar las sugerencias." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ suggestions: data ?? [] });
-  } catch (error) {
-    console.error("Suggestions GET error:", error);
-
-    return NextResponse.json(
-      { error: "Error interno del servidor." },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PATCH(request: Request) {
-  try {
-    const isAdmin = await isAdminLoggedIn();
-
-    if (!isAdmin) {
-      return NextResponse.json({ error: "No autorizado." }, { status: 401 });
-    }
-
     const body = await request.json();
 
-    const id = String(body?.id ?? "").trim();
-    const status = String(body?.status ?? "").trim();
+    const name = String(body?.name ?? "").trim();
+    const category = String(body?.category ?? "").trim();
+    const message = String(body?.message ?? "").trim();
 
-    if (!id) {
+    if (!name) {
       return NextResponse.json(
-        { error: "Falta el ID de la sugerencia." },
+        { error: "El nombre es obligatorio." },
         { status: 400 }
       );
     }
 
-    if (!allowedStatuses.includes(status)) {
+    if (!allowedCategories.includes(category)) {
       return NextResponse.json(
-        { error: "Estado no válido." },
+        { error: "La categoría no es válida." },
         { status: 400 }
       );
     }
 
-    const { error } = await supabaseAdmin
-      .from("suggestions")
-      .update({
-        status,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", id);
+    if (!message || message.length < 5) {
+      return NextResponse.json(
+        { error: "La sugerencia debe tener al menos 5 caracteres." },
+        { status: 400 }
+      );
+    }
+
+    const { error } = await supabaseAdmin.from("suggestions").insert({
+      name,
+      category,
+      message,
+      status: "pending",
+    });
 
     if (error) {
-      console.error("Error updating suggestion:", error);
+      console.error("Error inserting suggestion:", error);
 
       return NextResponse.json(
-        { error: "No se pudo actualizar la sugerencia." },
+        {
+          error:
+            "No se pudo guardar la sugerencia. Revisá la tabla suggestions en Supabase.",
+        },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Suggestions PATCH error:", error);
+    console.error("Suggestions POST error:", error);
 
     return NextResponse.json(
-      { error: "Error interno del servidor." },
+      { error: "Solicitud inválida o error interno en sugerencias." },
       { status: 500 }
     );
   }
