@@ -54,6 +54,7 @@ const weeklySchedule = [
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "16:00", activity: "Funcional" },
+      { time: "17:00", activity: "Preparación física deportiva" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -71,7 +72,7 @@ const weeklySchedule = [
       { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
-      { time: "21:00", activity: "Crosstraining" },
+      { time: "21:00", activity: "Boxeo y Crosstraining" },
     ],
   },
   {
@@ -85,6 +86,7 @@ const weeklySchedule = [
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "16:00", activity: "Funcional" },
+      { time: "17:00", activity: "Preparación física deportiva" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -102,7 +104,7 @@ const weeklySchedule = [
       { time: "16:00", activity: "Funcional" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
-      { time: "21:00", activity: "Crosstraining" },
+      { time: "21:00", activity: "Boxeo y Crosstraining" },
     ],
   },
   {
@@ -116,6 +118,7 @@ const weeklySchedule = [
       { time: "14:00", activity: "GAP" },
       { time: "15:00", activity: "GAP y Crosstraining" },
       { time: "16:00", activity: "Funcional" },
+      { time: "17:00", activity: "Preparación física deportiva" },
       { time: "18:30", activity: "Funcional" },
       { time: "19:30", activity: "Funcional" },
       { time: "21:00", activity: "Crosstraining" },
@@ -146,13 +149,20 @@ function ActivityPill({ activity }: { activity: string }) {
 
   const isCross = lowerActivity.includes("cross");
   const isGap = lowerActivity.includes("gap");
+  const isBoxing = lowerActivity.includes("boxeo");
+  const isSportsPrep = lowerActivity.includes("preparación");
   const isCombo = isCross && isGap;
+  const isBoxingCombo = isCross && isBoxing;
 
   return (
     <span
       className={`inline-flex rounded-full px-3 py-1 text-xs font-bold shadow-sm ${
-        isCombo
+        isCombo || isBoxingCombo
           ? "border border-red-300/50 bg-red-500/20 text-red-50"
+          : isSportsPrep
+            ? "border border-sky-300/40 bg-sky-500/15 text-sky-100"
+            : isBoxing
+              ? "border border-amber-300/40 bg-amber-500/15 text-amber-100"
           : isGap
             ? "border border-pink-300/40 bg-pink-500/15 text-pink-100"
             : isCross
@@ -517,8 +527,20 @@ export default function Home() {
               GAP
             </span>
 
+            <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+              Preparación física deportiva
+            </span>
+
+            <span className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2">
+              Boxeo
+            </span>
+
             <span className="rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-red-100">
               Horarios combinados: GAP y Crosstraining
+            </span>
+
+            <span className="rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-red-100">
+              Horarios combinados: Boxeo y Crosstraining
             </span>
           </div>
         </div>
